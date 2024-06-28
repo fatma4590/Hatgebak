@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768493635424",
+    "project_id": "hatgebak-eeb80",
+    "storage_bucket": "hatgebak-eeb80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768493635424:android:7ab3f1a72eb5f77d888005",
+        "android_client_info": {
+          "package_name": "com.example.hatgebak"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCeXSA4FECHJpLTWkudLz9Dlzf30Hbs6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
