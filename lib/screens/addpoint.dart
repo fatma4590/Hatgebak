@@ -486,7 +486,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return startTime != null
                       ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, startTime!.hour, startTime!.minute)
+                          selectedDate!.day, startTime!.hour, startTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -516,7 +516,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return endTime != null
                       ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, endTime!.hour, endTime!.minute)
+                          selectedDate!.day, endTime!.hour, endTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -529,7 +529,7 @@ class _AddPointPageState extends State<addpoint>
             backgroundColor: Color(0xFF33AD60),
             padding: EdgeInsets.all(16),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () {
             if (selectedDate != null && startTime != null && endTime != null) {
@@ -588,7 +588,7 @@ class _AddPointPageState extends State<addpoint>
             }
           },
           child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+              Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
         ),
       ],
     );
@@ -699,7 +699,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return startTime != null
                       ? DateTime(startDate!.year, startDate!.month,
-                      startDate!.day, startTime!.hour, startTime!.minute)
+                          startDate!.day, startTime!.hour, startTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -729,7 +729,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return endTime != null
                       ? DateTime(endDate!.year, endDate!.month, endDate!.day,
-                      endTime!.hour, endTime!.minute)
+                          endTime!.hour, endTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -802,7 +802,7 @@ class _AddPointPageState extends State<addpoint>
             }
           },
           child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+              Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
         ),
       ],
     );
