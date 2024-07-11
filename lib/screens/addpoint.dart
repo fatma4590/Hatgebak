@@ -339,38 +339,572 @@ class _AddpointState extends State<addpoint> {
   }
 }
 */
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+
+
+
+
+
+
+
+
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hatgebak/screens/homepage.dart';
+// import 'package:hatgebak/widgets/base_screen.dart';
+// import 'package:intl/intl.dart';
+// import 'package:isar/isar.dart';
+//
+// class addpoint extends StatefulWidget {
+//   static String id = 'addpointpage';
+//
+//   @override
+//   _AddPointPageState createState() => _AddPointPageState();
+// }
+//
+// class _AddPointPageState extends State<addpoint>
+//     with SingleTickerProviderStateMixin {
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
+//   TextEditingController userid = TextEditingController();
+//   TextEditingController location = TextEditingController();
+//   TextEditingController name = TextEditingController();
+//   TextEditingController price = TextEditingController();
+//   DateTime? selectedDate;
+//   TimeOfDay? startTime;
+//   TimeOfDay? endTime;
+//   DateTime? startDate;
+//   DateTime? endDate;
+//   bool isRecurring = false;
+//   String recurrenceType = 'daily'; // or 'weekly', 'monthly'
+//   List<String> selectedDays = []; // Store selected days for recurring events
+//   late TabController _tabController;
+//
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _tabController = TabController(length: 2, vsync: this);
+//   }
+//
+//   @override
+//   void dispose() {
+//     _tabController.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final format = DateFormat('yyyy-MM-dd HH:mm a');
+//     return BaseScreen(
+//       pageTitle: 'Add Parking Area',
+//       showBackButton: true,
+//       onBackButtonPressed: () {
+//         Navigator.of(context).pop(); // Handle back button press as needed
+//       },
+//       child: Scaffold(
+//         body: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: <Widget>[
+//               SizedBox(height: 16),
+//               TabBar(
+//                 tabs: [
+//                   Tab(text: 'Just Once'),
+//                   Tab(text: 'Recurring'),
+//                 ],
+//                 controller: _tabController,
+//                 indicatorColor: Color(0xFF33AD60),
+//                 labelColor: Color(0xFF33AD60),
+//                 unselectedLabelColor: Colors.black,
+//               ),
+//               Expanded(
+//                 child: TabBarView(
+//                   controller: _tabController,
+//                   children: <Widget>[
+//                     buildJustOnceForm(format),
+//                     buildRecurringForm(format),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget buildJustOnceForm(DateFormat format) {
+//     return ListView(
+//       children: <Widget>[
+//         buildTextField(location, 'Location'),
+//         buildTextField(name, 'Name'),
+//         buildTextField(price, 'Price Per Hour', isNumeric: true),
+//         SizedBox(height: 16),
+//         DateTimeField(
+//           format: DateFormat('yyyy-MM-dd'),
+//           decoration: InputDecoration(
+//             labelText: 'Choose Date',
+//             border: OutlineInputBorder(),
+//             prefixIcon: Icon(Icons.calendar_today),
+//           ),
+//           controller: TextEditingController(
+//               text: selectedDate != null
+//                   ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+//                   : ''),
+//           onShowPicker: (context, currentValue) async {
+//             final date = await showDatePicker(
+//               context: context,
+//               initialDate: currentValue ?? DateTime.now(),
+//               firstDate: DateTime(1900),
+//               lastDate: DateTime(2100),
+//             );
+//             if (date != null) {
+//               setState(() {
+//                 selectedDate = date;
+//               });
+//             }
+//             return selectedDate ?? currentValue ?? DateTime.now();
+//           },
+//         ),
+//         SizedBox(height: 16),
+//         Row(
+//           children: [
+//             Expanded(
+//               child: DateTimeField(
+//                 format: DateFormat('HH:mm'),
+//                 decoration: InputDecoration(
+//                   labelText: 'Choose Start Time',
+//                   border: OutlineInputBorder(),
+//                   prefixIcon: Icon(Icons.access_time),
+//                 ),
+//                 controller: TextEditingController(
+//                     text: startTime != null ? startTime!.format(context) : ''),
+//                 onShowPicker: (context, currentValue) async {
+//                   final time = await showTimePicker(
+//                     context: context,
+//                     initialTime: currentValue != null
+//                         ? TimeOfDay.fromDateTime(currentValue)
+//                         : TimeOfDay.now(),
+//                   );
+//                   if (time != null) {
+//                     setState(() {
+//                       startTime = time;
+//                     });
+//                   }
+//                   return startTime != null
+//                       ? DateTime(selectedDate!.year, selectedDate!.month,
+//                       selectedDate!.day, startTime!.hour, startTime!.minute)
+//                       : currentValue ?? DateTime.now();
+//                 },
+//               ),
+//             ),
+//             SizedBox(width: 16),
+//             Expanded(
+//               child: DateTimeField(
+//                 format: DateFormat('HH:mm'),
+//                 decoration: InputDecoration(
+//                   labelText: 'Choose End Time',
+//                   border: OutlineInputBorder(),
+//                   prefixIcon: Icon(Icons.access_time),
+//                 ),
+//                 controller: TextEditingController(
+//                     text: endTime != null ? endTime!.format(context) : ''),
+//                 onShowPicker: (context, currentValue) async {
+//                   final time = await showTimePicker(
+//                     context: context,
+//                     initialTime: currentValue != null
+//                         ? TimeOfDay.fromDateTime(currentValue)
+//                         : TimeOfDay.now(),
+//                   );
+//                   if (time != null) {
+//                     setState(() {
+//                       endTime = time;
+//                     });
+//                   }
+//                   return endTime != null
+//                       ? DateTime(selectedDate!.year, selectedDate!.month,
+//                       selectedDate!.day, endTime!.hour, endTime!.minute)
+//                       : currentValue ?? DateTime.now();
+//                 },
+//               ),
+//             ),
+//           ],
+//         ),
+//         SizedBox(height: 16),
+//         ElevatedButton(
+//           style: ElevatedButton.styleFrom(
+//             backgroundColor: Color(0xFF33AD60),
+//             padding: EdgeInsets.all(16),
+//             shape:
+//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+//           ),
+//           onPressed: () {
+//             if (selectedDate != null && startTime != null && endTime != null) {
+//               // Combine selectedDate with startTime and endTime
+//               DateTime startDate = DateTime(
+//                 selectedDate!.year,
+//                 selectedDate!.month,
+//                 selectedDate!.day,
+//                 startTime!.hour,
+//                 startTime!.minute,
+//               );
+//               DateTime endDate = DateTime(
+//                 selectedDate!.year,
+//                 selectedDate!.month,
+//                 selectedDate!.day,
+//                 endTime!.hour,
+//                 endTime!.minute,
+//               );
+//
+//               // Validate end time is at least 1 hour after start time
+//               if (endTime!.hour > startTime!.hour ||
+//                   (endTime!.hour == startTime!.hour &&
+//                       endTime!.minute > startTime!.minute)) {
+//                 FirebaseFirestore.instance.collection('parkingareas').add({
+//                   'userid': _auth.currentUser!.email,
+//                   'parkingid': Isar.defaultMaxSizeMiB,
+//                   'Location': location.text,
+//                   'Name': name.text,
+//                   'price': int.parse(price.text),
+//                   'startDate': Timestamp.fromDate(startDate),
+//                   'endDate': Timestamp.fromDate(endDate),
+//                   'isRecurring': false,
+//                 });
+//                 Navigator.pushNamed(context, homepage.id);
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text("Added successfully"),
+//                     backgroundColor: Color(0xFF33AD60),
+//                   ),
+//                 );
+//               } else {
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text("End time must be after start time"),
+//                     backgroundColor: Colors.red,
+//                   ),
+//                 );
+//               }
+//             } else {
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(
+//                   content: Text("Please fill in all fields"),
+//                   backgroundColor: Colors.red,
+//                 ),
+//               );
+//             }
+//           },
+//           child:
+//           Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+//         ),
+//       ],
+//     );
+//   }
+//
+//   Widget buildRecurringForm(DateFormat format) {
+//     return ListView(
+//       children: <Widget>[
+//         buildTextField(location, 'Location'),
+//         buildTextField(name, 'Name'),
+//         buildTextField(price, 'Price Per Hour', isNumeric: true),
+//         SizedBox(height: 16),
+//         Row(
+//           children: [
+//             Expanded(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: [
+//                   DateTimeField(
+//                     format: DateFormat('yyyy-MM-dd'),
+//                     decoration: InputDecoration(
+//                       labelText: 'Choose Start Date',
+//                       border: OutlineInputBorder(),
+//                       prefixIcon: Icon(Icons.calendar_today),
+//                     ),
+//                     controller: TextEditingController(
+//                         text: startDate != null
+//                             ? DateFormat('yyyy-MM-dd').format(startDate!)
+//                             : ''),
+//                     onShowPicker: (context, currentValue) async {
+//                       final date = await showDatePicker(
+//                         context: context,
+//                         initialDate: currentValue ?? DateTime.now(),
+//                         firstDate: DateTime(1900),
+//                         lastDate: DateTime(2100),
+//                       );
+//                       if (date != null) {
+//                         setState(() {
+//                           startDate = date;
+//                         });
+//                       }
+//                       return startDate ?? currentValue ?? DateTime.now();
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             SizedBox(width: 16),
+//             Expanded(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: [
+//                   DateTimeField(
+//                     format: DateFormat('yyyy-MM-dd'),
+//                     decoration: InputDecoration(
+//                       labelText: 'Choose End Date',
+//                       border: OutlineInputBorder(),
+//                       prefixIcon: Icon(Icons.calendar_today),
+//                     ),
+//                     controller: TextEditingController(
+//                         text: endDate != null
+//                             ? DateFormat('yyyy-MM-dd').format(endDate!)
+//                             : ''),
+//                     onShowPicker: (context, currentValue) async {
+//                       final date = await showDatePicker(
+//                         context: context,
+//                         initialDate: currentValue ?? DateTime.now(),
+//                         firstDate: DateTime(1900),
+//                         lastDate: DateTime(2100),
+//                       );
+//                       if (date != null) {
+//                         setState(() {
+//                           endDate = date;
+//                         });
+//                       }
+//                       return endDate ?? currentValue ?? DateTime.now();
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//         SizedBox(height: 16),
+//         Row(
+//           children: [
+//             Expanded(
+//               child: DateTimeField(
+//                 format: DateFormat('HH:mm'),
+//                 decoration: InputDecoration(
+//                   labelText: 'Choose Start Time',
+//                   border: OutlineInputBorder(),
+//                   prefixIcon: Icon(Icons.access_time),
+//                 ),
+//                 controller: TextEditingController(
+//                     text: startTime != null ? startTime!.format(context) : ''),
+//                 onShowPicker: (context, currentValue) async {
+//                   final time = await showTimePicker(
+//                     context: context,
+//                     initialTime: currentValue != null
+//                         ? TimeOfDay.fromDateTime(currentValue)
+//                         : TimeOfDay.now(),
+//                   );
+//                   if (time != null) {
+//                     setState(() {
+//                       startTime = time;
+//                     });
+//                   }
+//                   return startTime != null
+//                       ? DateTime(startDate!.year, startDate!.month,
+//                       startDate!.day, startTime!.hour, startTime!.minute)
+//                       : currentValue ?? DateTime.now();
+//                 },
+//               ),
+//             ),
+//             SizedBox(width: 16),
+//             Expanded(
+//               child: DateTimeField(
+//                 format: DateFormat('HH:mm'),
+//                 decoration: InputDecoration(
+//                   labelText: 'Choose End Time',
+//                   border: OutlineInputBorder(),
+//                   prefixIcon: Icon(Icons.access_time),
+//                 ),
+//                 controller: TextEditingController(
+//                     text: endTime != null ? endTime!.format(context) : ''),
+//                 onShowPicker: (context, currentValue) async {
+//                   final time = await showTimePicker(
+//                     context: context,
+//                     initialTime: currentValue != null
+//                         ? TimeOfDay.fromDateTime(currentValue)
+//                         : TimeOfDay.now(),
+//                   );
+//                   if (time != null) {
+//                     setState(() {
+//                       endTime = time;
+//                     });
+//                   }
+//                   return endTime != null
+//                       ? DateTime(endDate!.year, endDate!.month, endDate!.day,
+//                       endTime!.hour, endTime!.minute)
+//                       : currentValue ?? DateTime.now();
+//                 },
+//               ),
+//             ),
+//           ],
+//         ),
+//         SizedBox(height: 16),
+//         Text(
+//           'Select Days',
+//           style: TextStyle(fontSize: 16),
+//         ),
+//         SizedBox(height: 16),
+//         Wrap(
+//           spacing: 8,
+//           children: [
+//             for (String day in [
+//               'Monday',
+//               'Tuesday',
+//               'Wednesday',
+//               'Thursday',
+//               'Friday',
+//               'Saturday',
+//               'Sunday'
+//             ])
+//               ChoiceChip(
+//                 label: Text(day),
+//                 selected: selectedDays.contains(day),
+//                 onSelected: (selected) {
+//                   setState(() {
+//                     if (selected) {
+//                       selectedDays.add(day);
+//                     } else {
+//                       selectedDays.remove(day);
+//                     }
+//                   });
+//                 },
+//               ),
+//           ],
+//         ),
+//         ElevatedButton(
+//           style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+//           onPressed: () {
+//             if (startDate != null &&
+//                 endDate != null &&
+//                 startTime != null &&
+//                 endTime != null) {
+//               // Check if start time is before end time
+//               if (startTime!.hour > endTime!.hour ||
+//                   (startTime!.hour == endTime!.hour &&
+//                       startTime!.minute >= endTime!.minute)) {
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                   SnackBar(
+//                     content: Text("Start time must be before end time"),
+//                     backgroundColor: Colors.red,
+//                   ),
+//                 );
+//               } else {
+//                 storeRecurringParkingAreas();
+//                 Navigator.pushNamed(context, homepage.id);
+//                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//                   content: Text("Added successfully"),
+//                   backgroundColor: Colors.green,
+//                 ));
+//               }
+//             } else {
+//               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//                 content: Text("Please fill in all fields"),
+//                 backgroundColor: Colors.red,
+//               ));
+//             }
+//           },
+//           child:
+//           Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+//         ),
+//       ],
+//     );
+//   }
+//
+//   void storeRecurringParkingAreas() {
+//     DateTime current = startDate!;
+//     while (current.isBefore(endDate!) || current.isAtSameMomentAs(endDate!)) {
+//       // Check if the current date matches any of the selected days
+//       if (selectedDays.contains(DateFormat('EEEE').format(current))) {
+//         // Create the start and end DateTime objects for the current date
+//         DateTime currentStartDate = DateTime(
+//           current.year,
+//           current.month,
+//           current.day,
+//           startTime!.hour,
+//           startTime!.minute,
+//         );
+//         DateTime currentEndDate = DateTime(
+//           current.year,
+//           current.month,
+//           current.day,
+//           endTime!.hour,
+//           endTime!.minute,
+//         );
+//
+//         // Store the parking area entry in Firestore
+//         FirebaseFirestore.instance.collection('parkingareas').add({
+//           'userid': _auth.currentUser!.email,
+//           'Location': location.text,
+//           'Name': name.text,
+//           'price': price.text,
+//           'startDate': Timestamp.fromDate(currentStartDate),
+//           'endDate': Timestamp.fromDate(currentEndDate),
+//           'isRecurring': true,
+//         });
+//       }
+//
+//       // Move to the next day
+//       current = current.add(Duration(days: 1));
+//     }
+//   }
+//
+//   Widget buildTextField(TextEditingController controller, String labelText,
+//       {bool isNumeric = false}) {
+//     return Padding(
+//       padding: EdgeInsets.symmetric(vertical: 8.0),
+//       child: TextFormField(
+//         controller: controller,
+//         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+//         decoration: InputDecoration(
+//           labelText: labelText,
+//           border: OutlineInputBorder(),
+//         ),
+//       ),
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hatgebak/screens/homepage.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hatgebak/screens/homepage.dart';
 import 'package:hatgebak/widgets/base_screen.dart';
-import 'package:intl/intl.dart';
-import 'package:isar/isar.dart';
+
+import '../widgets/base_screen.dart';
 
 class addpoint extends StatefulWidget {
-  static String id = 'addpointpage';
+  static String id = 'add_point_screen';
 
   @override
-  _AddPointPageState createState() => _AddPointPageState();
+  _AddPointScreenState createState() => _AddPointScreenState();
 }
 
-class _AddPointPageState extends State<addpoint>
+class _AddPointScreenState extends State<addpoint>
     with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  TextEditingController userid = TextEditingController();
-  TextEditingController location = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController price = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
   DateTime? selectedDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
-  DateTime? startDate;
-  DateTime? endDate;
+  LatLng? selectedLocation;
   bool isRecurring = false;
   String recurrenceType = 'daily'; // or 'weekly', 'monthly'
   List<String> selectedDays = []; // Store selected days for recurring events
-  late TabController _tabController;
+
+  TabController? _tabController;
 
   @override
   void initState() {
@@ -380,7 +914,7 @@ class _AddPointPageState extends State<addpoint>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
@@ -429,9 +963,36 @@ class _AddPointPageState extends State<addpoint>
   Widget buildJustOnceForm(DateFormat format) {
     return ListView(
       children: <Widget>[
-        buildTextField(location, 'Location'),
-        buildTextField(name, 'Name'),
-        buildTextField(price, 'Price Per Hour', isNumeric: true),
+        buildTextField(nameController, 'Name'),
+        buildTextField(priceController, 'Price Per Hour', isNumeric: true),
+        SizedBox(height: 16),
+        TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: 'Selected Location',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.map),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationPicker(),
+                  ),
+                );
+                if (result != null) {
+                  setState(() {
+                    selectedLocation = result as LatLng;
+                  });
+                }
+              },
+            ),
+          ),
+          controller: TextEditingController(
+            text: selectedLocation != null
+                ? '${selectedLocation!.latitude}, ${selectedLocation!.longitude}'
+                : '',
+          ),
+        ),
         SizedBox(height: 16),
         DateTimeField(
           format: DateFormat('yyyy-MM-dd'),
@@ -441,9 +1002,10 @@ class _AddPointPageState extends State<addpoint>
             prefixIcon: Icon(Icons.calendar_today),
           ),
           controller: TextEditingController(
-              text: selectedDate != null
-                  ? DateFormat('yyyy-MM-dd').format(selectedDate!)
-                  : ''),
+            text: selectedDate != null
+                ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+                : '',
+          ),
           onShowPicker: (context, currentValue) async {
             final date = await showDatePicker(
               context: context,
@@ -471,13 +1033,13 @@ class _AddPointPageState extends State<addpoint>
                   prefixIcon: Icon(Icons.access_time),
                 ),
                 controller: TextEditingController(
-                    text: startTime != null ? startTime!.format(context) : ''),
+                  text: startTime != null ? startTime!.format(context) : '',
+                ),
                 onShowPicker: (context, currentValue) async {
                   final time = await showTimePicker(
                     context: context,
-                    initialTime: currentValue != null
-                        ? TimeOfDay.fromDateTime(currentValue)
-                        : TimeOfDay.now(),
+                    initialTime:
+                    currentValue != null ? TimeOfDay.fromDateTime(currentValue) : TimeOfDay.now(),
                   );
                   if (time != null) {
                     setState(() {
@@ -485,8 +1047,8 @@ class _AddPointPageState extends State<addpoint>
                     });
                   }
                   return startTime != null
-                      ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, startTime!.hour, startTime!.minute)
+                      ? DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day,
+                      startTime!.hour, startTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -501,13 +1063,13 @@ class _AddPointPageState extends State<addpoint>
                   prefixIcon: Icon(Icons.access_time),
                 ),
                 controller: TextEditingController(
-                    text: endTime != null ? endTime!.format(context) : ''),
+                  text: endTime != null ? endTime!.format(context) : '',
+                ),
                 onShowPicker: (context, currentValue) async {
                   final time = await showTimePicker(
                     context: context,
-                    initialTime: currentValue != null
-                        ? TimeOfDay.fromDateTime(currentValue)
-                        : TimeOfDay.now(),
+                    initialTime:
+                    currentValue != null ? TimeOfDay.fromDateTime(currentValue) : TimeOfDay.now(),
                   );
                   if (time != null) {
                     setState(() {
@@ -515,8 +1077,8 @@ class _AddPointPageState extends State<addpoint>
                     });
                   }
                   return endTime != null
-                      ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, endTime!.hour, endTime!.minute)
+                      ? DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day,
+                      endTime!.hour, endTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -528,11 +1090,207 @@ class _AddPointPageState extends State<addpoint>
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF33AD60),
             padding: EdgeInsets.all(16),
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
           onPressed: () {
-            if (selectedDate != null && startTime != null && endTime != null) {
+            if (selectedLocation != null && selectedDate != null && startTime != null && endTime != null) {
+              // Combine selectedDate with startTime and endTime
+              DateTime startDate = DateTime(
+                selectedDate!.year,
+                selectedDate!.month,
+                selectedDate!.day,
+                startTime!.hour,
+                startTime!.minute,
+              );
+              DateTime endDate = DateTime(
+                selectedDate!.year,
+                selectedDate!.month,
+                selectedDate!.day,
+                endTime!.hour,
+                endTime!.minute,
+              );
+
+              // Validate end time is at least 1 hour after start time
+              if (endTime!.hour > startTime!.hour ||
+                  (endTime!.hour == startTime!.hour && endTime!.minute > startTime!.minute)) {
+                FirebaseFirestore.instance.collection('parkingareas').add({
+                  'userid': _auth.currentUser!.email,
+                  'Location': selectedLocation!,
+                  'Name': nameController.text,
+                  'price': int.parse(priceController.text),
+                  'startDate': Timestamp.fromDate(startDate),
+                  'endDate': Timestamp.fromDate(endDate),
+                  'isRecurring': false,
+                }).then((_) {
+                  Navigator.pushNamed(context, homepage.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Added successfully"),
+                      backgroundColor: Color(0xFF33AD60),
+                    ),
+                  );
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Failed to add parking area: $error"),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                });
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("End time must be after start time"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Please fill in all fields"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+          child: Text(
+            "Add",
+            style: TextStyle(fontSize: 22, color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildRecurringForm(DateFormat format) {
+    return ListView(
+      children: <Widget>[
+        buildTextField(nameController, 'Name'),
+        buildTextField(priceController, 'Price Per Hour', isNumeric: true),
+        SizedBox(height: 16),
+        TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: 'Selected Location',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.map),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationPicker(),
+                  ),
+                );
+                if (result != null) {
+                  setState(() {
+                    selectedLocation = result as LatLng;
+                  });
+                }
+              },
+            ),
+          ),
+          controller: TextEditingController(
+            text: selectedLocation != null
+                ? '${selectedLocation!.latitude}, ${selectedLocation!.longitude}'
+                : '',
+          ),
+        ),
+        SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: DateTimeField(
+                format: DateFormat('yyyy-MM-dd'),
+                decoration: InputDecoration(
+                  labelText: 'Choose Start Date',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.calendar_today),
+                ),
+                controller: TextEditingController(
+                  text: selectedDate != null
+                      ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+                      : '',
+                ),
+                onShowPicker: (context, currentValue) async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: currentValue ?? DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  }
+                  return selectedDate ?? currentValue ?? DateTime.now();
+                },
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: DateTimeField(
+                format: DateFormat('yyyy-MM-dd'),
+                decoration: InputDecoration(
+                  labelText: 'Choose End Date',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.calendar_today),
+                ),
+                controller: TextEditingController(
+                  text: selectedDate != null
+                      ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+                      : '',
+                ),
+                onShowPicker: (context, currentValue) async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: currentValue ?? DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  }
+                  return selectedDate ?? currentValue ?? DateTime.now();
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16),
+        Row(
+          children: [
+            Checkbox(
+              value: isRecurring,
+              onChanged: (value) {
+                setState(() {
+                  isRecurring = value!;
+                });
+              },
+            ),
+            Text('Recurring Event'),
+          ],
+        ),
+        if (isRecurring) buildRecurringOptions(),
+        SizedBox(height: 16),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF33AD60),
+            padding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          onPressed: () {
+            if (selectedLocation != null &&
+                selectedDate != null &&
+                startTime != null &&
+                endTime != null) {
               // Combine selectedDate with startTime and endTime
               DateTime startDate = DateTime(
                 selectedDate!.year,
@@ -555,21 +1313,30 @@ class _AddPointPageState extends State<addpoint>
                       endTime!.minute > startTime!.minute)) {
                 FirebaseFirestore.instance.collection('parkingareas').add({
                   'userid': _auth.currentUser!.email,
-                  'parkingid': Isar.defaultMaxSizeMiB,
-                  'Location': location.text,
-                  'Name': name.text,
-                  'price': int.parse(price.text),
+                  'Location': selectedLocation!,
+                  'Name': nameController.text,
+                  'price': int.parse(priceController.text),
                   'startDate': Timestamp.fromDate(startDate),
                   'endDate': Timestamp.fromDate(endDate),
-                  'isRecurring': false,
+                  'isRecurring': true,
+                  'recurrenceType': recurrenceType,
+                  'selectedDays': selectedDays,
+                }).then((_) {
+                  Navigator.pushNamed(context, homepage.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Added successfully"),
+                      backgroundColor: Color(0xFF33AD60),
+                    ),
+                  );
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Failed to add parking area: $error"),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 });
-                Navigator.pushNamed(context, homepage.id);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Added successfully"),
-                    backgroundColor: Color(0xFF33AD60),
-                  ),
-                );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -587,276 +1354,203 @@ class _AddPointPageState extends State<addpoint>
               );
             }
           },
-          child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+          child: Text(
+            "Add",
+            style: TextStyle(fontSize: 22, color: Colors.white),
+          ),
         ),
       ],
     );
-  }
-
-  Widget buildRecurringForm(DateFormat format) {
-    return ListView(
-      children: <Widget>[
-        buildTextField(location, 'Location'),
-        buildTextField(name, 'Name'),
-        buildTextField(price, 'Price Per Hour', isNumeric: true),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DateTimeField(
-                    format: DateFormat('yyyy-MM-dd'),
-                    decoration: InputDecoration(
-                      labelText: 'Choose Start Date',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.calendar_today),
-                    ),
-                    controller: TextEditingController(
-                        text: startDate != null
-                            ? DateFormat('yyyy-MM-dd').format(startDate!)
-                            : ''),
-                    onShowPicker: (context, currentValue) async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: currentValue ?? DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100),
-                      );
-                      if (date != null) {
-                        setState(() {
-                          startDate = date;
-                        });
-                      }
-                      return startDate ?? currentValue ?? DateTime.now();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DateTimeField(
-                    format: DateFormat('yyyy-MM-dd'),
-                    decoration: InputDecoration(
-                      labelText: 'Choose End Date',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.calendar_today),
-                    ),
-                    controller: TextEditingController(
-                        text: endDate != null
-                            ? DateFormat('yyyy-MM-dd').format(endDate!)
-                            : ''),
-                    onShowPicker: (context, currentValue) async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: currentValue ?? DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100),
-                      );
-                      if (date != null) {
-                        setState(() {
-                          endDate = date;
-                        });
-                      }
-                      return endDate ?? currentValue ?? DateTime.now();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: DateTimeField(
-                format: DateFormat('HH:mm'),
-                decoration: InputDecoration(
-                  labelText: 'Choose Start Time',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.access_time),
-                ),
-                controller: TextEditingController(
-                    text: startTime != null ? startTime!.format(context) : ''),
-                onShowPicker: (context, currentValue) async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: currentValue != null
-                        ? TimeOfDay.fromDateTime(currentValue)
-                        : TimeOfDay.now(),
-                  );
-                  if (time != null) {
-                    setState(() {
-                      startTime = time;
-                    });
-                  }
-                  return startTime != null
-                      ? DateTime(startDate!.year, startDate!.month,
-                      startDate!.day, startTime!.hour, startTime!.minute)
-                      : currentValue ?? DateTime.now();
-                },
-              ),
-            ),
-            SizedBox(width: 16),
-            Expanded(
-              child: DateTimeField(
-                format: DateFormat('HH:mm'),
-                decoration: InputDecoration(
-                  labelText: 'Choose End Time',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.access_time),
-                ),
-                controller: TextEditingController(
-                    text: endTime != null ? endTime!.format(context) : ''),
-                onShowPicker: (context, currentValue) async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: currentValue != null
-                        ? TimeOfDay.fromDateTime(currentValue)
-                        : TimeOfDay.now(),
-                  );
-                  if (time != null) {
-                    setState(() {
-                      endTime = time;
-                    });
-                  }
-                  return endTime != null
-                      ? DateTime(endDate!.year, endDate!.month, endDate!.day,
-                      endTime!.hour, endTime!.minute)
-                      : currentValue ?? DateTime.now();
-                },
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 16),
-        Text(
-          'Select Days',
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(height: 16),
-        Wrap(
-          spacing: 8,
-          children: [
-            for (String day in [
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday'
-            ])
-              ChoiceChip(
-                label: Text(day),
-                selected: selectedDays.contains(day),
-                onSelected: (selected) {
-                  setState(() {
-                    if (selected) {
-                      selectedDays.add(day);
-                    } else {
-                      selectedDays.remove(day);
-                    }
-                  });
-                },
-              ),
-          ],
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-          onPressed: () {
-            if (startDate != null &&
-                endDate != null &&
-                startTime != null &&
-                endTime != null) {
-              // Check if start time is before end time
-              if (startTime!.hour > endTime!.hour ||
-                  (startTime!.hour == endTime!.hour &&
-                      startTime!.minute >= endTime!.minute)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Start time must be before end time"),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              } else {
-                storeRecurringParkingAreas();
-                Navigator.pushNamed(context, homepage.id);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Added successfully"),
-                  backgroundColor: Colors.green,
-                ));
-              }
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Please fill in all fields"),
-                backgroundColor: Colors.red,
-              ));
-            }
-          },
-          child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
-        ),
-      ],
-    );
-  }
-
-  void storeRecurringParkingAreas() {
-    DateTime current = startDate!;
-    while (current.isBefore(endDate!) || current.isAtSameMomentAs(endDate!)) {
-      // Check if the current date matches any of the selected days
-      if (selectedDays.contains(DateFormat('EEEE').format(current))) {
-        // Create the start and end DateTime objects for the current date
-        DateTime currentStartDate = DateTime(
-          current.year,
-          current.month,
-          current.day,
-          startTime!.hour,
-          startTime!.minute,
-        );
-        DateTime currentEndDate = DateTime(
-          current.year,
-          current.month,
-          current.day,
-          endTime!.hour,
-          endTime!.minute,
-        );
-
-        // Store the parking area entry in Firestore
-        FirebaseFirestore.instance.collection('parkingareas').add({
-          'userid': _auth.currentUser!.email,
-          'Location': location.text,
-          'Name': name.text,
-          'price': price.text,
-          'startDate': Timestamp.fromDate(currentStartDate),
-          'endDate': Timestamp.fromDate(currentEndDate),
-          'isRecurring': true,
-        });
-      }
-
-      // Move to the next day
-      current = current.add(Duration(days: 1));
-    }
   }
 
   Widget buildTextField(TextEditingController controller, String labelText,
       {bool isNumeric = false}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
         controller: controller,
         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(
           labelText: labelText,
           border: OutlineInputBorder(),
         ),
+      ),
+    );
+  }
+
+  Widget buildRecurringOptions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField(
+          value: recurrenceType,
+          items: [
+            DropdownMenuItem(
+              child: Text('Daily'),
+              value: 'daily',
+            ),
+            DropdownMenuItem(
+              child: Text('Weekly'),
+              value: 'weekly',
+            ),
+            DropdownMenuItem(
+              child: Text('Monthly'),
+              value: 'monthly',
+            ),
+          ],
+          onChanged: (value) {
+            setState(() {
+              recurrenceType = value.toString();
+            });
+          },
+          decoration: InputDecoration(
+            labelText: 'Recurrence Type',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 16),
+        Wrap(
+          children: [
+            FilterChip(
+              label: Text('Mon'),
+              selected: selectedDays.contains('Mon'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Mon');
+                  } else {
+                    selectedDays.remove('Mon');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Tue'),
+              selected: selectedDays.contains('Tue'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Tue');
+                  } else {
+                    selectedDays.remove('Tue');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Wed'),
+              selected: selectedDays.contains('Wed'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Wed');
+                  } else {
+                    selectedDays.remove('Wed');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Thu'),
+              selected: selectedDays.contains('Thu'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Thu');
+                  } else {
+                    selectedDays.remove('Thu');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Fri'),
+              selected: selectedDays.contains('Fri'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Fri');
+                  } else {
+                    selectedDays.remove('Fri');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Sat'),
+              selected: selectedDays.contains('Sat'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Sat');
+                  } else {
+                    selectedDays.remove('Sat');
+                  }
+                });
+              },
+            ),
+            FilterChip(
+              label: Text('Sun'),
+              selected: selectedDays.contains('Sun'),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    selectedDays.add('Sun');
+                  } else {
+                    selectedDays.remove('Sun');
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class LocationPicker extends StatefulWidget {
+  @override
+  _LocationPickerState createState() => _LocationPickerState();
+}
+
+class _LocationPickerState extends State<LocationPicker> {
+  LatLng? selectedLocation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Select Location'),
+      ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(31.19, 31.19), // Initial location
+              zoom: 16.0,
+            ),
+            onTap: (LatLng tappedPoint) {
+              setState(() {
+                selectedLocation = tappedPoint;
+              });
+            },
+          ),
+          if (selectedLocation != null)
+            Positioned(
+              child: Icon(Icons.pin_drop, color: Colors.red),
+              left: MediaQuery.of(context).size.width / 2 - 12.0,
+              top: MediaQuery.of(context).size.height / 2 - 40.0,
+            ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: () {
+          if (selectedLocation != null) {
+            Navigator.pop(context, selectedLocation);
+          }
+        },
       ),
     );
   }
