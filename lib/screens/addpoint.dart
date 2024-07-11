@@ -340,15 +340,6 @@ class _AddpointState extends State<addpoint> {
 }
 */
 
-
-
-
-
-
-
-
-
-
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -872,17 +863,14 @@ class _AddpointState extends State<addpoint> {
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hatgebak/screens/homepage.dart';
-import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hatgebak/screens/homepage.dart';
 import 'package:hatgebak/widgets/base_screen.dart';
-
-import '../widgets/base_screen.dart';
+import 'package:intl/intl.dart';
 
 class addpoint extends StatefulWidget {
   static String id = 'add_point_screen';
@@ -1038,8 +1026,9 @@ class _AddPointScreenState extends State<addpoint>
                 onShowPicker: (context, currentValue) async {
                   final time = await showTimePicker(
                     context: context,
-                    initialTime:
-                    currentValue != null ? TimeOfDay.fromDateTime(currentValue) : TimeOfDay.now(),
+                    initialTime: currentValue != null
+                        ? TimeOfDay.fromDateTime(currentValue)
+                        : TimeOfDay.now(),
                   );
                   if (time != null) {
                     setState(() {
@@ -1047,8 +1036,8 @@ class _AddPointScreenState extends State<addpoint>
                     });
                   }
                   return startTime != null
-                      ? DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day,
-                      startTime!.hour, startTime!.minute)
+                      ? DateTime(selectedDate!.year, selectedDate!.month,
+                          selectedDate!.day, startTime!.hour, startTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -1068,8 +1057,9 @@ class _AddPointScreenState extends State<addpoint>
                 onShowPicker: (context, currentValue) async {
                   final time = await showTimePicker(
                     context: context,
-                    initialTime:
-                    currentValue != null ? TimeOfDay.fromDateTime(currentValue) : TimeOfDay.now(),
+                    initialTime: currentValue != null
+                        ? TimeOfDay.fromDateTime(currentValue)
+                        : TimeOfDay.now(),
                   );
                   if (time != null) {
                     setState(() {
@@ -1077,8 +1067,8 @@ class _AddPointScreenState extends State<addpoint>
                     });
                   }
                   return endTime != null
-                      ? DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day,
-                      endTime!.hour, endTime!.minute)
+                      ? DateTime(selectedDate!.year, selectedDate!.month,
+                          selectedDate!.day, endTime!.hour, endTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -1095,7 +1085,10 @@ class _AddPointScreenState extends State<addpoint>
             ),
           ),
           onPressed: () {
-            if (selectedLocation != null && selectedDate != null && startTime != null && endTime != null) {
+            if (selectedLocation != null &&
+                selectedDate != null &&
+                startTime != null &&
+                endTime != null) {
               // Combine selectedDate with startTime and endTime
               DateTime startDate = DateTime(
                 selectedDate!.year,
@@ -1114,10 +1107,12 @@ class _AddPointScreenState extends State<addpoint>
 
               // Validate end time is at least 1 hour after start time
               if (endTime!.hour > startTime!.hour ||
-                  (endTime!.hour == startTime!.hour && endTime!.minute > startTime!.minute)) {
+                  (endTime!.hour == startTime!.hour &&
+                      endTime!.minute > startTime!.minute)) {
                 FirebaseFirestore.instance.collection('parkingareas').add({
                   'userid': _auth.currentUser!.email,
-                  'Location': selectedLocation!,
+                  'Location': GeoPoint(
+                      selectedLocation!.latitude, selectedLocation!.longitude)!,
                   'Name': nameController.text,
                   'price': int.parse(priceController.text),
                   'startDate': Timestamp.fromDate(startDate),
@@ -1527,9 +1522,8 @@ class _LocationPickerState extends State<LocationPicker> {
         children: [
           GoogleMap(
             initialCameraPosition: CameraPosition(
-              target: LatLng(31.19, 31.19), // Initial location
-              zoom: 16.0,
-            ),
+                target: LatLng(27.178711841386335, 31.185019126521677),
+                zoom: 10),
             onTap: (LatLng tappedPoint) {
               setState(() {
                 selectedLocation = tappedPoint;
