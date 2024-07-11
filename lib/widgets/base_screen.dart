@@ -170,16 +170,15 @@ class BaseScreen extends StatelessWidget {
   }
  }*/
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hatgebak/screens/myReservations.dart';
 import 'package:flutter/material.dart';
 import 'package:hatgebak/payment/payscreen.dart';
+import 'package:hatgebak/screens/FeedbackScreen.dart';
 import 'package:hatgebak/screens/WalletScreen.dart';
 import 'package:hatgebak/screens/addpoint.dart';
 import 'package:hatgebak/screens/homepage.dart';
 import 'package:hatgebak/screens/loginscreen.dart';
 import 'package:hatgebak/screens/myReservations.dart';
 import 'package:hatgebak/screens/myparking.dart';
-import 'package:hatgebak/screens/FeedbackScreen.dart';
 import 'package:hatgebak/screens/userprofile.dart';
 
 class BaseScreen extends StatelessWidget {
@@ -278,7 +277,7 @@ class BaseScreen extends StatelessWidget {
                 },
               ),
               _buildFooterButton(
-                icon: Icons.payment,
+                icon: Icons.feedback_outlined,
                 onPressed: () {
                   Navigator.pushNamed(context, FeedbackScreen.id);
                 },
@@ -303,7 +302,7 @@ class BaseScreen extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(
           16.0, 12.0, 16.0, 12.0), // Padding adjusted for top and bottom
       margin:
-      EdgeInsets.only(bottom: 12.0), // Added bottom margin to match footer
+          EdgeInsets.only(bottom: 12.0), // Added bottom margin to match footer
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -322,7 +321,7 @@ class BaseScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed:
-              onBackButtonPressed ?? () => Navigator.of(context).pop(),
+                  onBackButtonPressed ?? () => Navigator.of(context).pop(),
             ),
           Expanded(
             child: Text(

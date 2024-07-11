@@ -283,6 +283,7 @@ class _RegisterPageState extends State<registerpage> {
                     SizedBox(height: 30.0),
                     SizedBox(height: 30.0),
                     TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -367,6 +368,7 @@ class _RegisterPageState extends State<registerpage> {
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
+                      keyboardType: TextInputType.phone,
                       controller: phoneController,
                       validator: (value) {
                         if (value!.isEmpty) {
