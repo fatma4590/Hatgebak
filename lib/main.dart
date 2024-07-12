@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'package:hatgebak/screens/FeedbackScreen.dart';
-import 'package:hatgebak/screens/registerpage.dart';
+import 'package:hatgebak/payment/payscreen.dart';
 import 'package:hatgebak/screens/CardDetailsScreen.dart';
-//import 'package:hatgeback/screens/accountuser.dart';
+import 'package:hatgebak/screens/CustomGooglemaps.dart';
 import 'package:hatgebak/screens/FeedbackScreen.dart';
 import 'package:hatgebak/screens/addpoint.dart';
 import 'package:hatgebak/screens/homepage.dart';
@@ -14,9 +11,6 @@ import 'package:hatgebak/screens/myReservations.dart';
 import 'package:hatgebak/screens/myparking.dart';
 import 'package:hatgebak/screens/registerpage.dart';
 import 'package:hatgebak/screens/userprofile.dart';
-import 'package:hatgebak/payment/payscreen.dart';
-import 'package:hatgebak/screens/myReservations.dart';
-import 'package:isar/isar.dart';
 
 import 'firebase_options.dart';
 
@@ -56,6 +50,7 @@ class mainmyapp extends State<MyApp> {
         payscreen.id: (contexts) => payscreen(),
         myReservations.id: (context) => myReservations(),
         FeedbackScreen.id: (context) => FeedbackScreen(),
+        Customgooglemaps.id: (context) => Customgooglemaps(),
       },
       initialRoute: loginscreen.id,
     );

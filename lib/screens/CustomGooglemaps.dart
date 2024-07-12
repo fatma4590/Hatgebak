@@ -1,11 +1,12 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hatgebak/Helper/placemodel.dart';
 
 class Customgooglemaps extends StatefulWidget {
+  static String id = 'momen';
   const Customgooglemaps({super.key});
 
   @override
