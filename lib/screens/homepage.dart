@@ -1189,10 +1189,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'package:hatgebak/widgets/base_screen.dart';
-import 'package:hatgebak/Screens/ReservationScreen.dart';
 import 'package:hatgebak/screens/CustomGooglemaps.dart';
+import 'package:hatgebak/screens/ReservationScreen.dart';
+import 'package:hatgebak/widgets/base_screen.dart';
 import 'package:intl/intl.dart';
 
 class homepage extends StatefulWidget {
@@ -1219,7 +1218,7 @@ class _HomePageState extends State<homepage>
     final db = FirebaseFirestore.instance;
     final QuerySnapshot snapshot = await db.collection('parkingareas').get();
     final List<Map<String, dynamic>> list =
-        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     setState(() {
       _parkingAreas = list.where((parking) {
         final startDate = parking['startDate'].toDate();
@@ -1227,9 +1226,9 @@ class _HomePageState extends State<homepage>
         final now = DateTime.now();
         final currentDateTime = DateTime(now.year, now.month, now.day);
         final startDateWithoutTime =
-            DateTime(startDate.year, startDate.month, startDate.day);
+        DateTime(startDate.year, startDate.month, startDate.day);
         final endDateWithoutTime =
-            DateTime(endDate.year, endDate.month, endDate.day);
+        DateTime(endDate.year, endDate.month, endDate.day);
 
         return startDateWithoutTime == currentDateTime &&
             endDateWithoutTime == currentDateTime;
@@ -1336,12 +1335,6 @@ class _HomePageState extends State<homepage>
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                           ),
-                          child: Image.network(
-                            'https://example.com/image.jpg',
-                            fit: BoxFit.cover,
-                            height: 150,
-                            width: double.infinity,
-                          ),
                         ),
                         Container(
                           color: Color(0xFFE3F3E9),
@@ -1364,13 +1357,13 @@ class _HomePageState extends State<homepage>
                                   Icon(Icons.location_on,
                                       size: 16, color: Color(0xFF33AD60)),
                                   SizedBox(width: 5),
-                                  Text(
-                                    parking['Location'] ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   parking['Location'] ?? '',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                               SizedBox(height: 10),
@@ -1431,32 +1424,60 @@ class _HomePageState extends State<homepage>
                               child: Container(
                                 margin: EdgeInsets.only(
                                     top: 20), // Top margin added
-                                child: ElevatedButton(
-                                  onPressed: parking['isAvailable'] == true
-                                      ? () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ReservationScreen(
-                                                parkingArea: parking,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      : null,
-                                  child: Text(
-                                    "Reserve",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF33AD60),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: parking['isAvailable'] == true
+                                          ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReservationScreen(
+                                                  parkingArea: parking,
+                                                ),
+                                          ),
+                                        );
+                                      }
+                                          : null,
+                                      child: Text(
+                                        "Reserve",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF33AD60),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 20),
+                                      ),
                                     ),
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 20),
-                                  ),
+                                    SizedBox(
+                                        width: 10), // Space between buttons
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, Customgooglemaps.id);
+                                        // Implement the logic for the Location button here
+                                      },
+                                      child: Text(
+                                        "Location",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 20),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

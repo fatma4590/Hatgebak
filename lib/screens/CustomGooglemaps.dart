@@ -1,11 +1,12 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hatgebak/Helper/placemodel.dart';
 
 class Customgooglemaps extends StatefulWidget {
+  static String id = 'momen';
   const Customgooglemaps({super.key});
 
   @override
@@ -38,7 +39,7 @@ class _CustomgooglemapsState extends State<Customgooglemaps> {
     var imageFrame = await imageCodec.getNextFrame();
 
     var imageByteData =
-        await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
+    await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
     return imageByteData!.buffer.asUint8List();
   }
 
@@ -47,10 +48,10 @@ class _CustomgooglemapsState extends State<Customgooglemaps> {
         await getImageFromRawData('assets/image.png', 150));
     var mymarkers = places
         .map((placemodel) => Marker(
-            icon: custommarker,
-            position: placemodel.latLng,
-            infoWindow: InfoWindow(title: placemodel.name),
-            markerId: MarkerId(placemodel.id.toString())))
+        icon: custommarker,
+        position: placemodel.latLng,
+        infoWindow: InfoWindow(title: placemodel.name),
+        markerId: MarkerId(placemodel.id.toString())))
         .toSet();
     markers.addAll(mymarkers);
     setState(() {});
