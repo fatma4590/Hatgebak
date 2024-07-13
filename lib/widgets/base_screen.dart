@@ -404,7 +404,7 @@ class BaseScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.copy_all_rounded),
+            leading: Icon(Icons.wallet),
             title: Text('Wallet'),
             onTap: () {
               Navigator.push(
@@ -414,7 +414,7 @@ class BaseScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.copy_all_rounded),
+            leading: Icon(Icons.garage_outlined),
             title: Text('My Parking Areas'),
             onTap: () {
               Navigator.push(
