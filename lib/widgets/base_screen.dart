@@ -302,7 +302,7 @@ class BaseScreen extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(
           16.0, 12.0, 16.0, 12.0), // Padding adjusted for top and bottom
       margin:
-      EdgeInsets.only(bottom: 12.0), // Added bottom margin to match footer
+          EdgeInsets.only(bottom: 12.0), // Added bottom margin to match footer
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -321,7 +321,7 @@ class BaseScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed:
-              onBackButtonPressed ?? () => Navigator.of(context).pop(),
+                  onBackButtonPressed ?? () => Navigator.of(context).pop(),
             ),
           Expanded(
             child: Text(
