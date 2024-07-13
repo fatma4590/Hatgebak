@@ -579,6 +579,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           .collection('cards')
           .doc(cardSnapshot.docs.first.id)
           .update({'Balance': newBalance});
+
       return 'Card is valid';
     } else {
       return 'Insufficient balance';
