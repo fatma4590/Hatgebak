@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hatgebak/screens/homepage.dart';
-import 'package:hatgebak/widgets/base_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hatgebak/screens/homepage.dart';
 import 'package:hatgebak/widgets/base_screen.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +26,7 @@ class _AddPointPageState extends State<addpoint>
   TimeOfDay? endTime;
   DateTime? startDate;
   DateTime? endDate;
+  LatLng? selectedLocation;
   bool isRecurring = false;
   String recurrenceType = 'daily'; // or 'weekly', 'monthly'
   List<String> selectedDays = []; // Store selected days for recurring events
@@ -89,9 +89,36 @@ class _AddPointPageState extends State<addpoint>
   Widget buildJustOnceForm(DateFormat format) {
     return ListView(
       children: <Widget>[
-        buildTextField(location, 'Location'),
         buildTextField(name, 'Name'),
         buildTextField(price, 'Price Per Hour', isNumeric: true),
+        SizedBox(height: 16),
+        TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: 'Selected Location',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.map),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationPicker(),
+                  ),
+                );
+                if (result != null) {
+                  setState(() {
+                    selectedLocation = result as LatLng;
+                  });
+                }
+              },
+            ),
+          ),
+          controller: TextEditingController(
+            text: selectedLocation != null
+                ? '${selectedLocation!.latitude}, ${selectedLocation!.longitude}'
+                : '',
+          ),
+        ),
         SizedBox(height: 16),
         DateTimeField(
           format: DateFormat('yyyy-MM-dd'),
@@ -146,7 +173,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return startTime != null
                       ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, startTime!.hour, startTime!.minute)
+                          selectedDate!.day, startTime!.hour, startTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -176,7 +203,7 @@ class _AddPointPageState extends State<addpoint>
                   }
                   return endTime != null
                       ? DateTime(selectedDate!.year, selectedDate!.month,
-                      selectedDate!.day, endTime!.hour, endTime!.minute)
+                          selectedDate!.day, endTime!.hour, endTime!.minute)
                       : currentValue ?? DateTime.now();
                 },
               ),
@@ -189,7 +216,7 @@ class _AddPointPageState extends State<addpoint>
             backgroundColor: Color(0xFF33AD60),
             padding: EdgeInsets.all(16),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () async {
             if (selectedDate != null && startTime != null && endTime != null) {
@@ -249,7 +276,7 @@ class _AddPointPageState extends State<addpoint>
             }
           },
           child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+              Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
         ),
       ],
     );
@@ -320,11 +347,11 @@ class _AddPointPageState extends State<addpoint>
                       }
                       return startTime != null
                           ? DateTime(
-                          startDate!.year,
-                          startDate!.month,
-                          startDate!.day,
-                          startTime!.hour,
-                          startTime!.minute)
+                              startDate!.year,
+                              startDate!.month,
+                              startDate!.day,
+                              startTime!.hour,
+                              startTime!.minute)
                           : currentValue ?? DateTime.now();
                     },
                   ),
@@ -386,7 +413,7 @@ class _AddPointPageState extends State<addpoint>
                       }
                       return endTime != null
                           ? DateTime(endDate!.year, endDate!.month,
-                          endDate!.day, endTime!.hour, endTime!.minute)
+                              endDate!.day, endTime!.hour, endTime!.minute)
                           : currentValue ?? DateTime.now();
                     },
                   ),
@@ -499,7 +526,7 @@ class _AddPointPageState extends State<addpoint>
             backgroundColor: Color(0xFF33AD60),
             padding: EdgeInsets.all(16),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () async {
             if (startDate != null &&
@@ -564,7 +591,7 @@ class _AddPointPageState extends State<addpoint>
             }
           },
           child:
-          Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
+              Text("Add", style: TextStyle(fontSize: 22, color: Colors.white)),
         ),
       ],
     );
@@ -601,7 +628,7 @@ Future<int> getNextParkingId({bool isRecurring = false}) async {
 
   if (counterSnapshot.exists) {
     int currentCounter =
-    counterSnapshot[isRecurring ? 'recurring_parkingid' : 'once_parkingid'];
+        counterSnapshot[isRecurring ? 'recurring_parkingid' : 'once_parkingid'];
     int newCounter = currentCounter + 1;
     await counterRef.update(
         {isRecurring ? 'recurring_parkingid' : 'once_parkingid': newCounter});
@@ -614,5 +641,51 @@ Future<int> getNextParkingId({bool isRecurring = false}) async {
       await counterRef.set({'once_parkingid': 1});
       return 1;
     }
+  }
+}
+
+class LocationPicker extends StatefulWidget {
+  @override
+  _LocationPickerState createState() => _LocationPickerState();
+}
+
+class _LocationPickerState extends State<LocationPicker> {
+  LatLng? selectedLocation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Select Location'),
+      ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+                target: LatLng(27.178711841386335, 31.185019126521677),
+                zoom: 10),
+            onTap: (LatLng tappedPoint) {
+              setState(() {
+                selectedLocation = tappedPoint;
+              });
+            },
+          ),
+          if (selectedLocation != null)
+            Positioned(
+              child: Icon(Icons.pin_drop, color: Colors.red),
+              left: MediaQuery.of(context).size.width / 2 - 12.0,
+              top: MediaQuery.of(context).size.height / 2 - 40.0,
+            ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: () {
+          if (selectedLocation != null) {
+            Navigator.pop(context, selectedLocation);
+          }
+        },
+      ),
+    );
   }
 }
