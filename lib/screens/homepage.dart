@@ -1201,11 +1201,12 @@ class homepage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<homepage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<homepage> with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> _parkingAreas = [];
+  List<Map<String, dynamic>> _filteredParkingAreas = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late TabController _tabController;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -1233,6 +1234,7 @@ class _HomePageState extends State<homepage>
         return startDateWithoutTime == currentDateTime &&
             endDateWithoutTime == currentDateTime;
       }).toList();
+      _filteredParkingAreas = List.from(_parkingAreas);
     });
   }
 
@@ -1240,6 +1242,15 @@ class _HomePageState extends State<homepage>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _filterParkingAreas(String query) {
+    setState(() {
+      _filteredParkingAreas = _parkingAreas.where((parking) {
+        final name = parking['Name'] ?? '';
+        return name.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    });
   }
 
   @override
@@ -1288,6 +1299,8 @@ class _HomePageState extends State<homepage>
             children: [
               SizedBox(height: 20),
               TextField(
+                controller: _searchController,
+                onChanged: _filterParkingAreas,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFE3F3E9),
@@ -1308,9 +1321,9 @@ class _HomePageState extends State<homepage>
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: _parkingAreas.length,
+                itemCount: _filteredParkingAreas.length,
                 itemBuilder: (context, index) {
-                  var parking = _parkingAreas[index];
+                  var parking = _filteredParkingAreas[index];
                   final bool isUserParkingArea =
                       parking['userid'] == _auth.currentUser?.email;
                   return Container(
