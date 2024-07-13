@@ -244,7 +244,8 @@ class _AddPointPageState extends State<addpoint>
                 FirebaseFirestore.instance.collection('parkingareas').add({
                   'userid': _auth.currentUser!.email,
                   'parkingid': parkingId.toString(),
-                  'Location': location.text,
+                  'Location': GeoPoint(
+                      selectedLocation!.latitude, selectedLocation!.longitude)!,
                   'Name': name.text,
                   'price': int.parse(price.text),
                   'startDate': Timestamp.fromDate(startDate),
@@ -285,9 +286,35 @@ class _AddPointPageState extends State<addpoint>
   Widget buildRecurringForm(DateFormat format) {
     return ListView(
       children: <Widget>[
-        buildTextField(location, 'Location'),
         buildTextField(name, 'Name'),
         buildTextField(price, 'Price Per Hour', isNumeric: true),
+        TextField(
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: 'Selected Location',
+            suffixIcon: IconButton(
+              icon: Icon(Icons.map),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationPicker(),
+                  ),
+                );
+                if (result != null) {
+                  setState(() {
+                    selectedLocation = result as LatLng;
+                  });
+                }
+              },
+            ),
+          ),
+          controller: TextEditingController(
+            text: selectedLocation != null
+                ? '${selectedLocation!.latitude}, ${selectedLocation!.longitude}'
+                : '',
+          ),
+        ),
         SizedBox(height: 16),
         Row(
           children: [
@@ -558,7 +585,8 @@ class _AddPointPageState extends State<addpoint>
                     .add({
                   'userid': _auth.currentUser!.email,
                   'parkingid': parkingId.toString(),
-                  'Location': location.text,
+                  'Location': GeoPoint(
+                      selectedLocation!.latitude, selectedLocation!.longitude)!,
                   'Name': name.text,
                   'price': int.parse(price.text),
                   'startDate': Timestamp.fromDate(startDateTime),
