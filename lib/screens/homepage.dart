@@ -1218,7 +1218,7 @@ class _HomePageState extends State<homepage>
     final db = FirebaseFirestore.instance;
     final QuerySnapshot snapshot = await db.collection('parkingareas').get();
     final List<Map<String, dynamic>> list =
-        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     setState(() {
       _parkingAreas = list.where((parking) {
         final startDate = parking['startDate'].toDate();
@@ -1226,9 +1226,9 @@ class _HomePageState extends State<homepage>
         final now = DateTime.now();
         final currentDateTime = DateTime(now.year, now.month, now.day);
         final startDateWithoutTime =
-            DateTime(startDate.year, startDate.month, startDate.day);
+        DateTime(startDate.year, startDate.month, startDate.day);
         final endDateWithoutTime =
-            DateTime(endDate.year, endDate.month, endDate.day);
+        DateTime(endDate.year, endDate.month, endDate.day);
 
         return startDateWithoutTime == currentDateTime &&
             endDateWithoutTime == currentDateTime;
@@ -1357,13 +1357,13 @@ class _HomePageState extends State<homepage>
                                   Icon(Icons.location_on,
                                       size: 16, color: Color(0xFF33AD60)),
                                   SizedBox(width: 5),
-                                  Text(
-                                    parking['Location'] ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   parking['Location'] ?? '',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                               SizedBox(height: 10),
@@ -1430,16 +1430,16 @@ class _HomePageState extends State<homepage>
                                     ElevatedButton(
                                       onPressed: parking['isAvailable'] == true
                                           ? () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ReservationScreen(
-                                                    parkingArea: parking,
-                                                  ),
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ReservationScreen(
+                                                  parkingArea: parking,
                                                 ),
-                                              );
-                                            }
+                                          ),
+                                        );
+                                      }
                                           : null,
                                       child: Text(
                                         "Reserve",
@@ -1449,7 +1449,7 @@ class _HomePageState extends State<homepage>
                                         backgroundColor: Color(0xFF33AD60),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                         ),
                                         padding: EdgeInsets.symmetric(
                                             vertical: 12, horizontal: 20),
@@ -1471,7 +1471,7 @@ class _HomePageState extends State<homepage>
                                         backgroundColor: Colors.black,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                         ),
                                         padding: EdgeInsets.symmetric(
                                             vertical: 12, horizontal: 20),
@@ -1495,11 +1495,6 @@ class _HomePageState extends State<homepage>
   }
 
   Widget _buildPlaceholderMapView() {
-    return Center(
-      child: Text(
-        'Map View Placeholder',
-        style: TextStyle(fontSize: 24, color: Color(0xFF33AD60)),
-      ),
-    );
+    return Customgooglemaps();
   }
 }

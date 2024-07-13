@@ -39,7 +39,7 @@ class _CustomgooglemapsState extends State<Customgooglemaps> {
     var imageFrame = await imageCodec.getNextFrame();
 
     var imageByteData =
-        await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
+    await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
     return imageByteData!.buffer.asUint8List();
   }
 
@@ -48,10 +48,10 @@ class _CustomgooglemapsState extends State<Customgooglemaps> {
         await getImageFromRawData('assets/image.png', 150));
     var mymarkers = places
         .map((placemodel) => Marker(
-            icon: custommarker,
-            position: placemodel.latLng,
-            infoWindow: InfoWindow(title: placemodel.name),
-            markerId: MarkerId(placemodel.id.toString())))
+        icon: custommarker,
+        position: placemodel.latLng,
+        infoWindow: InfoWindow(title: placemodel.name),
+        markerId: MarkerId(placemodel.id.toString())))
         .toSet();
     markers.addAll(mymarkers);
     setState(() {});
