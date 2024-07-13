@@ -502,9 +502,9 @@ class _myparkingareasState extends State<myparking> {
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:hatgebak/screens/EditParkingScreen.dart';
 import 'package:hatgebak/widgets/base_screen.dart';
+import 'package:intl/intl.dart';
 
 class myparking extends StatefulWidget {
   static String id = 'myparking';
@@ -591,10 +591,10 @@ class _MyParkingAreasState extends State<myparking> {
                       child: Container(
                         height: 150,
                         width: double.infinity,
-                        child: Image.network(
-                          'https://example.com/image.jpg', // Replace with actual image URL
-                          fit: BoxFit.cover,
-                        ),
+                        // child: Image.network(
+                        //   'https://example.com/image.jpg', // Replace with actual image URL
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                     ),
                     Container(
@@ -621,13 +621,13 @@ class _MyParkingAreasState extends State<myparking> {
                                 color: Color(0xFF33AD60),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                parking['Location'] ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                              // Text(
+                              //   parking['Location'] ?? '',
+                              //   style: TextStyle(
+                              //     fontSize: 14,
+                              //     color: Colors.grey,
+                              //   ),
+                              // ),
                             ],
                           ),
                           SizedBox(height: 10),

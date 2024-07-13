@@ -277,7 +277,7 @@ class BaseScreen extends StatelessWidget {
                 },
               ),
               _buildFooterButton(
-                icon: Icons.payment,
+                icon: Icons.feedback_outlined,
                 onPressed: () {
                   Navigator.pushNamed(context, FeedbackScreen.id);
                 },
