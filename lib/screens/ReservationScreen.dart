@@ -336,28 +336,28 @@ class _ReservationScreenState extends State<ReservationScreen> {
       },
     );
   }
-
-  void _showPayMobPaymentDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("PayMob Payment Details"),
-          content: Center(
-            child: Text("Place PayMob Payment UI here."),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //
+  // void _showPayMobPaymentDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text("PayMob Payment Details"),
+  //         content: Center(
+  //           child: Text("Place PayMob Payment UI here."),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('Close'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void _showBankCardDetailsDialog() {
     showDialog(
