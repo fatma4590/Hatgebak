@@ -6,12 +6,13 @@ import 'package:hatgebak/screens/CustomGooglemaps.dart';
 import 'package:hatgebak/screens/FeedbackScreen.dart';
 import 'package:hatgebak/screens/addpoint.dart';
 import 'package:hatgebak/screens/homepage.dart';
+import 'package:hatgebak/screens/intropage.dart';
 import 'package:hatgebak/screens/loginscreen.dart';
 import 'package:hatgebak/screens/myReservations.dart';
 import 'package:hatgebak/screens/myparking.dart';
 import 'package:hatgebak/screens/registerpage.dart';
 import 'package:hatgebak/screens/userprofile.dart';
-
+import 'package:hatgebak/screens/intropage.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -51,8 +52,9 @@ class mainmyapp extends State<MyApp> {
         myReservations.id: (context) => myReservations(),
         FeedbackScreen.id: (context) => FeedbackScreen(),
         Customgooglemaps.id: (context) => Customgooglemaps(),
+        OnboardingScreen.id:(context)=>OnboardingScreen(),
       },
-      initialRoute: loginscreen.id,
+      initialRoute: OnboardingScreen.id,
     );
     //momen to fatma
   }

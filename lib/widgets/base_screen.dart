@@ -270,12 +270,12 @@ class BaseScreen extends StatelessWidget {
               //   },
               // ),
 
-              _buildFooterButton(
-                icon: Icons.payment,
-                onPressed: () {
-                  Navigator.pushNamed(context, payscreen.id);
-                },
-              ),
+              // _buildFooterButton(
+              //   icon: Icons.payment,
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, payscreen.id);
+              //   },
+              // ),
               _buildFooterButton(
                 icon: Icons.feedback_outlined,
                 onPressed: () {
