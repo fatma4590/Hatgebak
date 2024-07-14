@@ -176,16 +176,18 @@ class _DotIndicator extends StatelessWidget {
 
 class OnboardingModel {
   final String lottieFile;
+  final String logo;
   final String title;
   final String subtitle;
 
-  OnboardingModel(this.lottieFile, this.title, this.subtitle);
+  OnboardingModel(this.lottieFile,this.logo, this.title, this.subtitle);
 }
 
 List<OnboardingModel> tabs = [
   OnboardingModel(
     'assets/files/car1.json',
-    'Hatgeback',
+    'assets/image.png',
+    'Hatgebak',
     'Find parking spots  , \n earn from yours \n.',
   ),
 
