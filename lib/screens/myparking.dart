@@ -1451,14 +1451,7 @@ class _MyParkingAreasState extends State<myparking> {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
                       ),
-                      child: Container(
-                        height: 150,
-                        width: double.infinity,
-                        child: Image.network(
-                          'https://example.com/image.jpg', // Replace with actual image URL
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+
                     ),
                     Container(
                       color: Color(0xFFE3F3E9),
